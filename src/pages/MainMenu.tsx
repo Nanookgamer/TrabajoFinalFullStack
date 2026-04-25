@@ -1,8 +1,8 @@
-import { useRef, useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useMatrixRain } from '../hooks/useMatrixRain';
-import { apiGetSave } from '../services/api';
-import type { ThemeTokens, GameState } from '../types';
+import { useRef, useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useMatrixRain } from "../hooks/useMatrixRain";
+import { apiGetSave } from "../services/api";
+import type { ThemeTokens, GameState } from "../types";
 
 interface Props {
   theme: ThemeTokens;
@@ -15,7 +15,7 @@ export default function MainMenu({ theme: t, onNewGame, onContinue }: Props) {
   useMatrixRain(canvasRef);
 
   const { user, logout } = useAuth();
-  const [savedGame, setSavedGame] = useState<GameState | null | 'loading'>('loading');
+  const [savedGame, setSavedGame] = useState<GameState | null | "loading">("loading");
 
   useEffect(() => {
     apiGetSave()
@@ -25,13 +25,13 @@ export default function MainMenu({ theme: t, onNewGame, onContinue }: Props) {
 
   const btnBase: React.CSSProperties = {
     width: 260,
-    padding: '13px 0',
+    padding: "13px 0",
     fontFamily: t.titleFont,
     fontSize: 15,
     letterSpacing: 3,
-    cursor: 'pointer',
+    cursor: "pointer",
     borderRadius: 2,
-    transition: 'opacity 0.15s',
+    transition: "opacity 0.15s",
   };
 
   const btnPrimary: React.CSSProperties = {
@@ -43,7 +43,7 @@ export default function MainMenu({ theme: t, onNewGame, onContinue }: Props) {
 
   const btnSecondary: React.CSSProperties = {
     ...btnBase,
-    background: 'transparent',
+    background: "transparent",
     border: `1px solid ${t.border}`,
     color: t.textDim,
   };
@@ -51,22 +51,22 @@ export default function MainMenu({ theme: t, onNewGame, onContinue }: Props) {
   const btnDisabled: React.CSSProperties = {
     ...btnSecondary,
     opacity: 0.35,
-    cursor: 'not-allowed',
+    cursor: "not-allowed",
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: t.bg }}>
-      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0 }} />
+    <div style={{ position: "fixed", inset: 0, background: t.bg }}>
+      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
 
       <div style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
         gap: 16,
-        animation: 'fadeIn 0.35s ease-out',
+        animation: "fadeIn 0.35s ease-out",
       }}>
         <div style={{
           fontFamily: t.titleFont,
@@ -94,9 +94,9 @@ export default function MainMenu({ theme: t, onNewGame, onContinue }: Props) {
         </button>
 
         <button
-          style={savedGame && savedGame !== 'loading' ? btnPrimary : btnDisabled}
-          disabled={!savedGame || savedGame === 'loading'}
-          onClick={() => savedGame && savedGame !== 'loading' && onContinue(savedGame)}
+          style={savedGame && savedGame !== "loading" ? btnPrimary : btnDisabled}
+          disabled={!savedGame || savedGame === "loading"}
+          onClick={() => savedGame && savedGame !== "loading" && onContinue(savedGame)}
         >
           CONTINUAR
         </button>

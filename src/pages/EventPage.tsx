@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
-import { EVENTS } from '../data/events';
-import { SHOP_POOL, CARDS } from '../data/cards';
-import type { ThemeTokens, GameState, EventChoice } from '../types';
+import { useState, useMemo } from "react";
+import { EVENTS } from "../data/events";
+import { SHOP_POOL, CARDS } from "../data/cards";
+import type { ThemeTokens, GameState, EventChoice } from "../types";
 
 interface Props {
   theme: ThemeTokens;
@@ -17,7 +17,7 @@ export default function EventPage({ theme: t, gameState, onDone }: Props) {
   );
 
   const [chosen, setChosen] = useState<EventChoice | null>(null);
-  const [resultText, setResultText] = useState('');
+  const [resultText, setResultText] = useState("");
   const [updatedState, setUpdatedState] = useState<GameState>(gameState);
 
   function choose(choice: EventChoice) {
@@ -54,54 +54,54 @@ export default function EventPage({ theme: t, gameState, onDone }: Props) {
   }
 
   const btnBase: React.CSSProperties = {
-    width: '100%',
-    padding: '12px',
+    width: "100%",
+    padding: "12px",
     borderRadius: 2,
     fontFamily: t.bodyFont,
     fontSize: 14,
-    cursor: chosen ? 'default' : 'pointer',
-    transition: 'opacity 0.15s',
+    cursor: chosen ? "default" : "pointer",
+    transition: "opacity 0.15s",
   };
 
   return (
     <div style={{
-      position: 'fixed', inset: 0, background: t.bg,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      position: "fixed", inset: 0, background: t.bg,
+      display: "flex", alignItems: "center", justifyContent: "center",
       fontFamily: t.bodyFont, color: t.text,
-      animation: 'fadeIn 0.35s ease-out',
+      animation: "fadeIn 0.35s ease-out",
     }}>
       <div style={{
-        maxWidth: 520, width: '90%',
+        maxWidth: 520, width: "90%",
         background: t.surface2, border: `2px solid ${t.border}`,
         borderRadius: 4,
-        padding: '44px 40px',
-        display: 'flex', flexDirection: 'column', gap: 20,
+        padding: "44px 40px",
+        display: "flex", flexDirection: "column", gap: 20,
       }}>
-        <div style={{ fontSize: 52, textAlign: 'center' }}>{event.icon}</div>
+        <div style={{ fontSize: 52, textAlign: "center" }}>{event.icon}</div>
 
         <div style={{
           fontFamily: t.titleFont, color: t.primary, fontSize: 20,
-          textAlign: 'center', letterSpacing: 3,
+          textAlign: "center", letterSpacing: 3,
         }}>
           {event.title}
         </div>
 
         <div style={{
           color: t.textDim, fontSize: 14, lineHeight: 1.65,
-          textAlign: 'center', fontStyle: 'italic',
+          textAlign: "center", fontStyle: "italic",
         }}>
           {event.desc}
         </div>
 
         {!chosen && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {event.choices.map((choice, i) => (
               <button
                 key={i}
                 onClick={() => choose(choice)}
                 style={{
                   ...btnBase,
-                  background: i === 0 ? t.buttonBg : 'transparent',
+                  background: i === 0 ? t.buttonBg : "transparent",
                   border: `1px solid ${i === 0 ? t.buttonBorder : t.border}`,
                   color: t.text,
                   letterSpacing: 2,
@@ -117,8 +117,8 @@ export default function EventPage({ theme: t, gameState, onDone }: Props) {
           <>
             <div style={{
               background: t.surface1, border: `1px solid ${t.primary}`,
-              borderRadius: 2, padding: '12px 16px',
-              color: t.primary, fontSize: 14, textAlign: 'center', lineHeight: 1.5,
+              borderRadius: 2, padding: "12px 16px",
+              color: t.primary, fontSize: 14, textAlign: "center", lineHeight: 1.5,
             }}>
               {resultText}
             </div>

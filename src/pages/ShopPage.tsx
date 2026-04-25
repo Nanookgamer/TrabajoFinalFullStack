@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import { CARDS, SHOP_POOL, cardPrice } from '../data/cards';
-import type { ThemeTokens, GameState, Card } from '../types';
+import { useState, useMemo } from "react";
+import { CARDS, SHOP_POOL, cardPrice } from "../data/cards";
+import type { ThemeTokens, GameState, Card } from "../types";
 
 interface Props {
   theme: ThemeTokens;
@@ -36,10 +36,10 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
   const [diceUpgradeBought, setDiceUpgradeBought] = useState(false);
   const [vendorLine] = useState(() => {
     const lines = [
-      'UNIDAD MERCANTIL-7 EN LÍNEA. Inventario disponible.',
-      'Procesando catálogo... Ofertas óptimas calculadas.',
-      'Transacción segura garantizada.',
-      'Datos = poder. ¿Adquieres protocolos nuevos?',
+      "UNIDAD MERCANTIL-7 EN LÍNEA. Inventario disponible.",
+      "Procesando catálogo... Ofertas óptimas calculadas.",
+      "Transacción segura garantizada.",
+      "Datos = poder. ¿Adquieres protocolos nuevos?",
     ];
     return lines[Math.floor(Math.random() * lines.length)];
   });
@@ -63,15 +63,15 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
 
   return (
     <div style={{
-      position: 'fixed', inset: 0, background: t.bg,
-      display: 'flex', flexDirection: 'column',
+      position: "fixed", inset: 0, background: t.bg,
+      display: "flex", flexDirection: "column",
       fontFamily: t.bodyFont, color: t.text,
-      animation: 'fadeIn 0.35s ease-out',
+      animation: "fadeIn 0.35s ease-out",
     }}>
       {/* Header */}
       <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '12px 24px',
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "12px 24px",
         background: t.surface1, borderBottom: `1px solid ${t.border}`,
       }}>
         <div style={{ fontFamily: t.titleFont, color: t.primary, fontSize: 16, letterSpacing: 3 }}>
@@ -81,34 +81,34 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
       </div>
 
       {/* Content */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
 
         {/* Left: Vendor + deck */}
         <div style={{
           width: 200, flexShrink: 0,
           background: t.surface1, borderRight: `1px solid ${t.border}`,
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          padding: '20px 12px', gap: 12, overflowY: 'auto',
+          display: "flex", flexDirection: "column", alignItems: "center",
+          padding: "20px 12px", gap: 12, overflowY: "auto",
         }}>
           <div style={{ fontSize: 64 }}>🤖</div>
 
           <div style={{
             background: t.surface2, border: `1px solid ${t.border}`,
-            borderRadius: 2, padding: '8px 10px',
-            fontSize: 12, color: t.text, lineHeight: 1.5, textAlign: 'center',
+            borderRadius: 2, padding: "8px 10px",
+            fontSize: 12, color: t.text, lineHeight: 1.5, textAlign: "center",
           }}>
             {vendorLine}
           </div>
 
-          <div style={{ width: '100%', marginTop: 8 }}>
+          <div style={{ width: "100%", marginTop: 8 }}>
             <div style={{ fontFamily: t.titleFont, fontSize: 11, color: t.textDim, marginBottom: 8, letterSpacing: 1 }}>
               MAZO
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               {deck.map((id, i) => {
                 const card = CARDS[id];
                 return (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: t.text }}>
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: t.text }}>
                     <span style={{ color: typeColor(card.type) }}>{card.icon}</span>
                     <span>{card.name}</span>
                   </div>
@@ -123,9 +123,9 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
 
         {/* Right: Shop cards */}
         <div style={{
-          flex: 1, padding: '20px 24px',
-          display: 'flex', flexWrap: 'wrap', gap: 16,
-          alignContent: 'flex-start', overflowY: 'auto',
+          flex: 1, padding: "20px 24px",
+          display: "flex", flexWrap: "wrap", gap: 16,
+          alignContent: "flex-start", overflowY: "auto",
         }}>
           {items.map((item, i) => {
             const inDeck = gameState.deck.includes(item.card.id);
@@ -141,32 +141,32 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
                   background: t.cardBg,
                   border: `1.5px solid ${item.bought ? t.border : (canBuy ? tc : t.border)}`,
                   borderRadius: 2,
-                  padding: '10px 8px',
-                  cursor: canBuy ? 'pointer' : 'default',
+                  padding: "10px 8px",
+                  cursor: canBuy ? "pointer" : "default",
                   opacity: item.bought ? 0.55 : (gold < item.price ? 0.42 : 1),
-                  display: 'flex', flexDirection: 'column', gap: 6,
+                  display: "flex", flexDirection: "column", gap: 6,
                 }}
               >
                 <div style={{
                   background: t.surface2, borderRadius: 2,
-                  padding: '2px 6px', fontSize: 11, textAlign: 'center',
-                  color: item.bought ? '#44cc66' : (gold < item.price ? t.textDim : t.primary),
+                  padding: "2px 6px", fontSize: 11, textAlign: "center",
+                  color: item.bought ? "#44cc66" : (gold < item.price ? t.textDim : t.primary),
                   fontFamily: t.titleFont,
                 }}>
-                  {item.bought ? '✓ Comprada' : (inDeck ? `🪙 ${item.price} (ya en mazo)` : `🪙 ${item.price}`)}
+                  {item.bought ? "✓ Comprada" : (inDeck ? `🪙 ${item.price} (ya en mazo)` : `🪙 ${item.price}`)}
                 </div>
                 <div style={{ height: 3, background: tc }} />
-                <div style={{ fontSize: 9, color: tc, fontFamily: t.titleFont, letterSpacing: 1, textAlign: 'center' }}>
+                <div style={{ fontSize: 9, color: tc, fontFamily: t.titleFont, letterSpacing: 1, textAlign: "center" }}>
                   {item.card.type.toUpperCase()}
                 </div>
-                <div style={{ fontSize: 28, textAlign: 'center' }}>{item.card.icon}</div>
-                <div style={{ fontSize: 11, color: t.text, fontFamily: t.titleFont, textAlign: 'center' }}>
+                <div style={{ fontSize: 28, textAlign: "center" }}>{item.card.icon}</div>
+                <div style={{ fontSize: 11, color: t.text, fontFamily: t.titleFont, textAlign: "center" }}>
                   {item.card.name}
                 </div>
-                <div style={{ fontSize: 9, color: t.primary, textAlign: 'center' }}>
+                <div style={{ fontSize: 9, color: t.primary, textAlign: "center" }}>
                   {item.card.reqLabel}
                 </div>
-                <div style={{ fontSize: 10, color: t.textDim, textAlign: 'center', lineHeight: 1.3 }}>
+                <div style={{ fontSize: 10, color: t.textDim, textAlign: "center", lineHeight: 1.3 }}>
                   {item.card.desc}
                 </div>
               </div>
@@ -182,28 +182,28 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
                 background: t.cardBg,
                 border: `1.5px solid ${diceUpgradeBought ? t.border : (gold >= DICE_UPGRADE_PRICE ? t.primary : t.border)}`,
                 borderRadius: 2,
-                padding: '10px 8px',
-                cursor: (!diceUpgradeBought && gold >= DICE_UPGRADE_PRICE) ? 'pointer' : 'default',
+                padding: "10px 8px",
+                cursor: (!diceUpgradeBought && gold >= DICE_UPGRADE_PRICE) ? "pointer" : "default",
                 opacity: diceUpgradeBought ? 0.55 : (gold < DICE_UPGRADE_PRICE ? 0.42 : 1),
-                display: 'flex', flexDirection: 'column', gap: 6,
+                display: "flex", flexDirection: "column", gap: 6,
               }}
             >
               <div style={{
                 background: t.surface2, borderRadius: 2,
-                padding: '2px 6px', fontSize: 11, textAlign: 'center',
-                color: diceUpgradeBought ? '#44cc66' : t.primary, fontFamily: t.titleFont,
+                padding: "2px 6px", fontSize: 11, textAlign: "center",
+                color: diceUpgradeBought ? "#44cc66" : t.primary, fontFamily: t.titleFont,
               }}>
-                {diceUpgradeBought ? '✓ Comprado' : `🪙 ${DICE_UPGRADE_PRICE}`}
+                {diceUpgradeBought ? "✓ Comprado" : `🪙 ${DICE_UPGRADE_PRICE}`}
               </div>
               <div style={{ height: 3, background: t.primary }} />
-              <div style={{ fontSize: 9, color: t.primary, fontFamily: t.titleFont, letterSpacing: 1, textAlign: 'center' }}>
+              <div style={{ fontSize: 9, color: t.primary, fontFamily: t.titleFont, letterSpacing: 1, textAlign: "center" }}>
                 ESPECIAL 🎲
               </div>
-              <div style={{ fontSize: 28, textAlign: 'center' }}>🎲</div>
-              <div style={{ fontSize: 11, color: t.text, fontFamily: t.titleFont, textAlign: 'center' }}>
+              <div style={{ fontSize: 28, textAlign: "center" }}>🎲</div>
+              <div style={{ fontSize: 11, color: t.text, fontFamily: t.titleFont, textAlign: "center" }}>
                 Dado Extra
               </div>
-              <div style={{ fontSize: 10, color: t.textDim, textAlign: 'center', lineHeight: 1.3 }}>
+              <div style={{ fontSize: 10, color: t.textDim, textAlign: "center", lineHeight: 1.3 }}>
                 {diceCount} → {diceCount + 1} dados por turno
               </div>
             </div>
@@ -213,16 +213,16 @@ export default function ShopPage({ theme: t, gameState, onDone }: Props) {
 
       {/* Continue */}
       <div style={{
-        padding: '16px', textAlign: 'center',
+        padding: "16px", textAlign: "center",
         background: t.surface1, borderTop: `1px solid ${t.border}`,
       }}>
         <button
           onClick={() => onDone({ ...gameState, gold, deck, diceCount })}
           style={{
-            padding: '12px 40px',
+            padding: "12px 40px",
             background: t.buttonBg, border: `1px solid ${t.buttonBorder}`,
             borderRadius: 2, color: t.text, fontFamily: t.titleFont,
-            fontSize: 14, letterSpacing: 3, cursor: 'pointer',
+            fontSize: 14, letterSpacing: 3, cursor: "pointer",
           }}
         >
           AVANZAR ▶
