@@ -11,9 +11,9 @@
  * Persistencia: el token y los datos del usuario se guardan en localStorage
  * con las claves "dt_token" y "dt_user" para sobrevivir recargas de página.
  */
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { User } from '../types';
-import { apiLogin, apiRegister } from '../services/api';
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import type { User } from "../types";
+import { apiLogin, apiRegister } from "../services/api";
 
 interface AuthContextValue {
   user: User | null;
@@ -32,8 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Recupera la sesión guardada al montar el componente (recarga de página)
   useEffect(() => {
-    const savedToken = localStorage.getItem('dt_token');
-    const savedUser  = localStorage.getItem('dt_user');
+    const savedToken = localStorage.getItem("dt_token");
+    const savedUser  = localStorage.getItem("dt_user");
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));
@@ -45,8 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await apiLogin(username, password);
     setToken(data.token);
     setUser(data.user);
-    localStorage.setItem('dt_token', data.token);
-    localStorage.setItem('dt_user', JSON.stringify(data.user));
+    localStorage.setItem("dt_token", data.token);
+    localStorage.setItem("dt_user", JSON.stringify(data.user));
   };
 
   // Llama a la API de registro y persiste las credenciales en localStorage
@@ -54,16 +54,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await apiRegister(username, password);
     setToken(data.token);
     setUser(data.user);
-    localStorage.setItem('dt_token', data.token);
-    localStorage.setItem('dt_user', JSON.stringify(data.user));
+    localStorage.setItem("dt_token", data.token);
+    localStorage.setItem("dt_user", JSON.stringify(data.user));
   };
 
   // Elimina el token y los datos del usuario tanto del estado como del almacenamiento local
   const logout = () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('dt_token');
-    localStorage.removeItem('dt_user');
+    localStorage.removeItem("dt_token");
+    localStorage.removeItem("dt_user");
   };
 
   return (
@@ -76,6 +76,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 // Hook de acceso al contexto — lanza un error descriptivo si se usa fuera de AuthProvider
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth debe usarse dentro de AuthProvider');
+  if (!ctx) throw new Error("useAuth debe usarse dentro de AuthProvider");
   return ctx;
 }
