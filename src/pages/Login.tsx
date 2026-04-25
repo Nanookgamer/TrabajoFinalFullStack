@@ -1,3 +1,10 @@
+/**
+ * Pantalla de inicio de sesión de Dice Tactics.
+ *
+ * Muestra el logo del juego, un formulario con usuario y contraseña
+ * y un enlace para ir a la pantalla de registro.
+ * El fondo usa el efecto de lluvia de Matrix (useMatrixRain).
+ */
 import { useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useMatrixRain } from "../hooks/useMatrixRain";
@@ -5,20 +12,24 @@ import type { ThemeTokens } from "../types";
 
 interface Props {
   theme: ThemeTokens;
-  onSuccess: () => void;
-  onRegister: () => void;
+  onSuccess: () => void;   // Llamado tras iniciar sesión correctamente
+  onRegister: () => void;  // Navega a la pantalla de registro
 }
 
 export default function Login({ theme: t, onSuccess, onRegister }: Props) {
+  // Canvas sobre el que se dibuja el efecto Matrix
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useMatrixRain(canvasRef);
 
   const { login } = useAuth();
+
+  // ── Estado del formulario ────────────────────────────────────────────────────
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
 
+  // Valida los campos y llama a la API de autenticación
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username.trim() || password.length < 3) {
@@ -37,6 +48,7 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
     }
   };
 
+  // ── Estilos reutilizados ─────────────────────────────────────────────────────
   const inputStyle: React.CSSProperties = {
     width: "100%",
     padding: "10px 14px",
@@ -66,13 +78,13 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
 
   return (
     <div style={{ position: "fixed", inset: 0, background: t.bg }}>
+      {/* Canvas del fondo Matrix */}
       <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
 
+      {/* Tarjeta del formulario centrada sobre el canvas */}
       <div style={{
         position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: "flex", alignItems: "center", justifyContent: "center",
         height: "100%",
       }}>
         <div style={{
@@ -83,11 +95,12 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
           width: 340,
           animation: "fadeIn 0.35s ease-out",
         }}>
+          {/* Logo SVG y título del juego */}
           <div style={{ textAlign: "center", marginBottom: 24 }}>
             <svg width="48" height="48" viewBox="0 0 48 48">
-              <rect x="2" y="2" width="20" height="20" rx="2" fill={t.primary} opacity="0.9" />
-              <rect x="26" y="2" width="20" height="20" rx="2" fill={t.accent} opacity="0.9" />
-              <rect x="2" y="26" width="20" height="20" rx="2" fill={t.accent} opacity="0.9" />
+              <rect x="2"  y="2"  width="20" height="20" rx="2" fill={t.primary} opacity="0.9" />
+              <rect x="26" y="2"  width="20" height="20" rx="2" fill={t.accent}  opacity="0.9" />
+              <rect x="2"  y="26" width="20" height="20" rx="2" fill={t.accent}  opacity="0.9" />
               <rect x="26" y="26" width="20" height="20" rx="2" fill={t.primary} opacity="0.9" />
               <circle cx="12" cy="12" r="3" fill={t.bg} />
               <circle cx="36" cy="12" r="3" fill={t.bg} />
@@ -95,16 +108,14 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
               <circle cx="36" cy="36" r="3" fill={t.bg} />
             </svg>
             <div style={{
-              fontFamily: t.titleFont,
-              color: t.primary,
-              fontSize: 22,
-              marginTop: 8,
-              letterSpacing: 4,
+              fontFamily: t.titleFont, color: t.primary,
+              fontSize: 22, marginTop: 8, letterSpacing: 4,
             }}>
               DICE TACTICS
             </div>
           </div>
 
+          {/* Formulario de inicio de sesión */}
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <input
               style={inputStyle}
@@ -122,6 +133,7 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
               autoComplete="current-password"
             />
 
+            {/* Mensaje de error de validación o de red */}
             {error && (
               <div style={{ color: t.accent, fontFamily: t.bodyFont, fontSize: 13, textAlign: "center" }}>
                 {error}
@@ -133,17 +145,14 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
             </button>
           </form>
 
+          {/* Enlace para ir a la pantalla de registro */}
           <div style={{ textAlign: "center", marginTop: 16 }}>
             <button
               onClick={onRegister}
               style={{
-                background: "none",
-                border: "none",
-                color: t.textDim,
-                fontFamily: t.bodyFont,
-                fontSize: 13,
-                cursor: "pointer",
-                textDecoration: "underline",
+                background: "none", border: "none",
+                color: t.textDim, fontFamily: t.bodyFont,
+                fontSize: 13, cursor: "pointer", textDecoration: "underline",
               }}
             >
               REGISTRARSE

@@ -1,3 +1,10 @@
+/**
+ * Pantalla de registro de nuevo usuario.
+ *
+ * Valida que el nombre de usuario tenga al menos 3 caracteres,
+ * que la contraseña tenga al menos 3 caracteres y que ambas contraseñas coincidan.
+ * El fondo usa el mismo efecto Matrix que la pantalla de login.
+ */
 import { useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useMatrixRain } from "../hooks/useMatrixRain";
@@ -5,8 +12,8 @@ import type { ThemeTokens } from "../types";
 
 interface Props {
   theme: ThemeTokens;
-  onSuccess: () => void;
-  onBack: () => void;
+  onSuccess: () => void; // Llamado tras registrarse correctamente
+  onBack: () => void;    // Vuelve a la pantalla de login
 }
 
 export default function Register({ theme: t, onSuccess, onBack }: Props) {
@@ -14,12 +21,15 @@ export default function Register({ theme: t, onSuccess, onBack }: Props) {
   useMatrixRain(canvasRef);
 
   const { register } = useAuth();
+
+  // ── Estado del formulario ────────────────────────────────────────────────────
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [confirm,  setConfirm]  = useState("");
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
 
+  // Valida los campos y llama a la API de registro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim().length < 3) {
@@ -46,6 +56,7 @@ export default function Register({ theme: t, onSuccess, onBack }: Props) {
     }
   };
 
+  // ── Estilos reutilizados ─────────────────────────────────────────────────────
   const inputStyle: React.CSSProperties = {
     width: "100%",
     padding: "10px 14px",
@@ -74,13 +85,13 @@ export default function Register({ theme: t, onSuccess, onBack }: Props) {
 
   return (
     <div style={{ position: "fixed", inset: 0, background: t.bg }}>
+      {/* Canvas del fondo Matrix */}
       <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
 
+      {/* Tarjeta del formulario centrada */}
       <div style={{
         position: "relative",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: "flex", alignItems: "center", justifyContent: "center",
         height: "100%",
       }}>
         <div style={{
@@ -91,17 +102,16 @@ export default function Register({ theme: t, onSuccess, onBack }: Props) {
           width: 340,
           animation: "fadeIn 0.35s ease-out",
         }}>
+          {/* Título de la sección */}
           <div style={{
-            fontFamily: t.titleFont,
-            color: t.primary,
-            fontSize: 18,
-            letterSpacing: 3,
-            textAlign: "center",
-            marginBottom: 24,
+            fontFamily: t.titleFont, color: t.primary,
+            fontSize: 18, letterSpacing: 3,
+            textAlign: "center", marginBottom: 24,
           }}>
             REGISTRO
           </div>
 
+          {/* Formulario de registro: usuario + contraseña + confirmación */}
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <input
               style={inputStyle}
@@ -127,6 +137,7 @@ export default function Register({ theme: t, onSuccess, onBack }: Props) {
               autoComplete="new-password"
             />
 
+            {/* Mensaje de error de validación o de red */}
             {error && (
               <div style={{ color: t.accent, fontFamily: t.bodyFont, fontSize: 13, textAlign: "center" }}>
                 {error}
@@ -138,17 +149,14 @@ export default function Register({ theme: t, onSuccess, onBack }: Props) {
             </button>
           </form>
 
+          {/* Enlace para volver al login */}
           <div style={{ textAlign: "center", marginTop: 16 }}>
             <button
               onClick={onBack}
               style={{
-                background: "none",
-                border: "none",
-                color: t.textDim,
-                fontFamily: t.bodyFont,
-                fontSize: 13,
-                cursor: "pointer",
-                textDecoration: "underline",
+                background: "none", border: "none",
+                color: t.textDim, fontFamily: t.bodyFont,
+                fontSize: 13, cursor: "pointer", textDecoration: "underline",
               }}
             >
               ← VOLVER
