@@ -1,7 +1,7 @@
 /**
  * Middleware de autenticación JWT para rutas protegidas.
  *
- * Extrae el token del header "Authorization: Bearer <token>",
+ * Extrae el token del header,
  * lo verifica con JWT_SECRET y adjunta el userId al objeto Request.
  * Si el token falta o es inválido/expirado devuelve 401.
  *

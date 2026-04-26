@@ -1,11 +1,12 @@
 /**
- * Rutas de autenticación de Dice Tactics.
+ * Rutas de autenticación (JWT).
  *
  *   POST /api/auth/register — crea un usuario nuevo y devuelve un JWT.
  *   POST /api/auth/login    — verifica credenciales y devuelve un JWT.
  *
- * Ambas rutas limitan el registro a un máximo de 5 usuarios y
- * guardan la contraseña como hash bcrypt (salt rounds = 10).
+ * Ambas rutas limitan el registro a un máximo de 5 usuarios (por no 
+ * saturar la base de datos) y guardan la contraseña como hash bcrypt
+ * (salt rounds = 10).
  * El token JWT tiene validez de 3 horas.
  */
 import { Router } from "express";

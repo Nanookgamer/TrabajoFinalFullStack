@@ -1,5 +1,5 @@
 /**
- * Pantalla de combate por turnos de Dice Tactics.
+ * Pantalla de combate por turnos.
  *
  * Flujo de un turno:
  *   1. "roll"      → El jugador lanza todos sus dados.

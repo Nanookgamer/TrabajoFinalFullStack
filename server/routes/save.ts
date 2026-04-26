@@ -1,7 +1,7 @@
 /**
  * Rutas de gestión de partidas guardadas.
  *
- * Todas las rutas requieren autenticación JWT (authMiddleware).
+ * Todas las rutas requieren autenticación JWT (en authMiddleware).
  *
  *   GET    /api/save         — devuelve los 3 slots del usuario (data: null si vacío).
  *   POST   /api/save/:slot   — crea o sobreescribe un slot (upsert).

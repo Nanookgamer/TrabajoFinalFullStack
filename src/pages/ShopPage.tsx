@@ -1,5 +1,5 @@
 /**
- * Tienda entre combates de Dice Tactics.
+ * Tienda entre combates.
  *
  * Aparece en los pisos impares (1 y 3) después de ganar un combate.
  * Ofrece 4 cartas aleatorias del SHOP_POOL (que no estén ya en el mazo)

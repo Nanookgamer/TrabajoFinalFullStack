@@ -3,7 +3,8 @@
  *
  * Valida que el nombre de usuario tenga al menos 3 caracteres,
  * que la contraseña tenga al menos 3 caracteres y que ambas contraseñas coincidan.
- * El fondo usa el mismo efecto Matrix que la pantalla de login.
+ * 
+ * El fondo usa el efecto de lluvia de Matrix (useMatrixRain).
  */
 import { useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";

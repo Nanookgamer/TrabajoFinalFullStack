@@ -1,5 +1,5 @@
 /**
- * Pantalla de inicio de sesión de Dice Tactics.
+ * Pantalla de inicio de sesión.
  *
  * Muestra el logo del juego, un formulario con usuario y contraseña
  * y un enlace para ir a la pantalla de registro.

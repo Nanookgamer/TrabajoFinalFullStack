@@ -1,7 +1,7 @@
 /**
  * Definiciones de tipos TypeScript compartidas por toda la aplicación.
- * Centralizar los tipos aquí evita importaciones circulares y mantiene
- * un único punto de verdad para el modelo de datos del juego.
+ * Centralizar todos los tipos ahorra el tener que definirlos 
+ * cada vez y tenerlo aquí lo puedo llamar donde quiera.
  */
 
 // ── Tipos de carta ────────────────────────────────────────────────────────────
@@ -18,12 +18,12 @@ export type CardRequirement =
 // Efectos que puede tener una carta al resolverse
 export interface CardEffect {
   damage?: number;
-  hits?: number;                          // Multiplicador de golpes (ej. doble_golpe)
-  block?: number;                         // 9999 = bloqueo infinito
+  hits?: number;                          // Multiplicador de golpes (Hacer daño x cantidad de veces)
+  block?: number;                         // Bloqueo del daño entrante
   heal?: number;
   gold?: number;
   reflect?: boolean;                      // Refleja el siguiente ataque del enemigo
-  dot?: { dmg: number; turns: number };   // Daño a lo largo del tiempo (veneno)
+  dot?: { dmg: number; turns: number };   // Daño a lo largo del tiempo
   regen?: { hp: number; turns: number };  // Curación por turno
 }
 
@@ -43,7 +43,7 @@ export interface Card {
 export interface Enemy {
   id: string;
   name: string;
-  image: string;  // Ruta relativa a /img/ (ej. "enemy/slime.png")
+  image: string;  // Ruta relativa a "/img/"
   maxHp: number;
   attack: number;
   gold: number;   // Oro que otorga al ser derrotado
@@ -76,20 +76,22 @@ export interface GameEvent {
 
 // ── Estado del juego ──────────────────────────────────────────────────────────
 
-// Datos de la partida persistida (guardada en API y localStorage)
+// Datos de la partida (guardada en API y localStorage)
 export interface GameState {
   playerHp: number;
   playerMaxHp: number;
   gold: number;
-  deck: string[];       // IDs de las cartas del mazo
+  deck: string[];       // IDs de las cartas del mazo (asi no tengo que guardar toda la carta)
   floor: number;        // Piso actual (0–3)
-  totalTurns: number;
+  totalTurns: number;   // Turnos que ha hecho el jugador en total, es una buena forma de que el jugador vuelva a jugar (para batir su record)
   diceCount: number;    // Número de dados que se lanzan cada turno
   _won?: boolean;       // Resultado final: true = victoria, false = derrota
 }
 
 // ── Tipos de tema ─────────────────────────────────────────────────────────────
 
+// Hice un cambio de temas para tener varios colores pero al final no quedaba bien asi que me decante por estos colores más cibernéticos, 
+// pero lo mantengo por si en el futuro quiero hacer un tema claro y oscuro
 export type ThemeName = 'scifi';
 
 // Todos los tokens de diseño del tema activo — se pasan como prop a cada componente

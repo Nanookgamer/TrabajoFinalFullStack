@@ -1,5 +1,5 @@
 /**
- * Hook que dibuja el efecto de lluvia de código estilo Matrix sobre un <canvas>.
+ * Fondo que dibuja el efecto de lluvia de código estilo Matrix sobre un <canvas>.
  *
  * Usa requestAnimationFrame para animar columnas de caracteres que caen.
  * Cada frame se pinta un rectángulo semitransparente sobre el canvas para
@@ -16,7 +16,7 @@ export function useMatrixRain(canvasRef: RefObject<HTMLCanvasElement | null>) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Mezcla de katakana y caracteres ASCII para dar el efecto Matrix sci-fi
+    // Mezcla de caracteres especiales para dar el efecto de Matrix
     const chars = "アイウエカキクサシスタチツナニ#$%&ABCDEF><123456";
 
     const resize = () => {

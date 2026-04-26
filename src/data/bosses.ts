@@ -1,3 +1,9 @@
+/**
+ * Bosses del juego, aparece al final de los nodos del mapa (nivel 4).
+ *
+ * Es llamado desde los enemies.ts para el último nodo.
+ * 
+ */
 import type { Enemy } from "../types";
 
 export const BOSSES: Enemy[] = [

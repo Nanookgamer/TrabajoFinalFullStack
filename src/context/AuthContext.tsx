@@ -9,7 +9,9 @@
  *   - logout:   cierra la sesión y limpia localStorage.
  *
  * Persistencia: el token y los datos del usuario se guardan en localStorage
- * con las claves "dt_token" y "dt_user" para sobrevivir recargas de página.
+ * con las claves "dt_token" y "dt_user" para sobrevivir recargas de página, 
+ * aunque te reenvia al menú principal (ya que el token se guarda), porque no
+ * guardo tantos datos de como se ha quedado el enemigo de vida, etc.
  */
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import type { User } from "../types";

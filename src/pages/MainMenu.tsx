@@ -1,12 +1,12 @@
 /**
- * Menú principal de Dice Tactics.
+ * Menú principal del juego.
  *
  * Muestra el nombre del usuario autenticado y dos botones:
  *   - JUGAR    → navega a la pantalla de selección de partidas (LoadGame).
  *   - CERRAR SESIÓN → llama a logout() del AuthContext, que limpia el token
  *     de localStorage y devuelve el usuario a la pantalla de login.
  *
- * El fondo usa el efecto de lluvia de código Matrix (useMatrixRain).
+ * El fondo usa el efecto de lluvia de Matrix (useMatrixRain).
  */
 import { useRef } from "react";
 import { useAuth } from "../context/AuthContext";

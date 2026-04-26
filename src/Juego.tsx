@@ -1,18 +1,19 @@
 /**
- * Raíz de la aplicación Dice Tactics.
+ * El juego en si de Dice Tactics.
  *
  * Juego.tsx hace dos cosas:
- *   1. Envuelve toda la app en AuthProvider para que cualquier componente
- *      pueda acceder al contexto de autenticación (JWT, usuario, logout).
- *   2. AppRouter implementa el enrutador basado en estado: no hay URL router,
- *      las pantallas se cambian actualizando la variable `screen`.
+ *   1. Envuelve toda la app en AuthProvider para que cualquier componente pueda acceder al contexto
+ *    de autenticación (JWT, usuario, logout).
+ *   2. AppRouter implementa el enrutador basado en estado: no hay URL router,las pantallas se cambian
+ *    actualizando la variable `screen` en vez de router.
  *
  * Flujo de pantallas:
- *   (sin sesión) login ↔ register
+ *   (sin sesión) login ↔ register (como no hay router ni se hacen peticiones al backend solo tengo que 
+ *    pedir el token y nunca van a poder entrar a menu, loadgame y game cambiando la ruta)
  *   (con sesión) menu → loadgame → game → menu
  *
- * El slot activo y el GameState se elevan aquí para que Game.tsx
- * pueda guardarlos en la API sin tener que volver a cargarlos.
+ * El slot activo y el GameState se elevan aquí para que Game.tsx pueda guardarlos en la API sin
+ *  tener que volver a cargarlos.
  */
 import { useState } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -25,14 +26,14 @@ import LoadGame from "./pages/LoadGame";
 import Game from "./pages/Game";
 import "./styles.css";
 
-// Tema activo — actualmente solo existe "scifi"
+// Tema activo — actualmente solo existe "scifi", pero a futuro puede que meta más
 const t = THEMES["scifi"];
 
 function AppRouter() {
   const { user } = useAuth();
 
   // Inicialización lazy: si ya hay token en localStorage arranca en "menu"
-  // para evitar parpadeo de la pantalla de login en recargas de página
+  // esto para evitar parpadeo de la pantalla de login en recargas de página
   const [screen,    setScreen]    = useState<AppScreen>(() =>
     localStorage.getItem("dt_token") ? "menu" : "login"
   );

@@ -1,3 +1,13 @@
+/*──────────────────────────────────*\
+La unica página de css, opte por hacerla más pequeña y solo para lo más general y animaciones sencillas
+Pero como tenia muchos componentes y estoy acostumbrado a modificar cada componente por código lo acabe poniendo así.
+
+ - Reset / Normalizar
+ - Body + Tipografía general
+ - Animaciones varias
+ - Scrollbar ajustes y estilo para cuando un componente se sale del contenido o necesita el scrollbar
+\*──────────────────────────────────*/
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
