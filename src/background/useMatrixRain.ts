@@ -1,3 +1,12 @@
+/**
+ * Hook que dibuja el efecto de lluvia de código estilo Matrix sobre un <canvas>.
+ *
+ * Usa requestAnimationFrame para animar columnas de caracteres que caen.
+ * Cada frame se pinta un rectángulo semitransparente sobre el canvas para
+ * crear el efecto de estela (fade-out de los caracteres anteriores).
+ *
+ * Cancela la animación y el listener de resize al desmontar el componente.
+ */
 import { useEffect, type RefObject } from "react";
 
 export function useMatrixRain(canvasRef: RefObject<HTMLCanvasElement | null>) {
@@ -7,6 +16,7 @@ export function useMatrixRain(canvasRef: RefObject<HTMLCanvasElement | null>) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Mezcla de katakana y caracteres ASCII para dar el efecto Matrix sci-fi
     const chars = "アイウエカキクサシスタチツナニ#$%&ABCDEF><123456";
 
     const resize = () => {

@@ -1,3 +1,14 @@
+/**
+ * Temas visuales del juego.
+ *
+ * Actualmente solo existe el tema "scifi" (paleta oscura con cian/magenta).
+ * Todos los componentes reciben el tema activo como prop (ThemeTokens)
+ * en lugar de usar variables CSS, lo que permite cambiar el tema en tiempo
+ * de ejecución sin recargar la página.
+ *
+ * Para añadir un nuevo tema basta con añadir una entrada en este objeto
+ * y extender el tipo ThemeName en types.ts.
+ */
 import type { ThemeTokens, ThemeName } from "../types";
 
 export const THEMES: Record<ThemeName, ThemeTokens> = {

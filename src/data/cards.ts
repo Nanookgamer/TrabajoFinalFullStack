@@ -1,3 +1,13 @@
+/**
+ * Datos estáticos de todas las cartas del juego.
+ *
+ * CARDS        — diccionario completo de las 15 cartas, indexado por ID.
+ * STARTER_DECK — IDs de las cartas con las que empieza una partida nueva.
+ * SHOP_POOL    — IDs de las cartas disponibles en la tienda (excluye las del mazo inicial).
+ *
+ * checkRequirement() — comprueba si un valor de dado activa una carta.
+ * cardPrice()        — calcula el precio de una carta en la tienda (base por tipo + aleatoriedad).
+ */
 import type { Card } from "../types";
 
 export const CARDS: Record<string, Card> = {
@@ -175,6 +185,7 @@ export const SHOP_POOL: string[] = [
   "pickpocket",
 ];
 
+// Devuelve true si el valor del dado cumple el requisito de activación de la carta
 export function checkRequirement(req: Card["req"], dieValue: number): boolean {
   switch (req.type) {
     case "even":  return dieValue % 2 === 0;
@@ -184,6 +195,7 @@ export function checkRequirement(req: Card["req"], dieValue: number): boolean {
   }
 }
 
+// Precio base por tipo + ±4 de variación aleatoria para que la tienda se sienta diferente en cada visita
 export function cardPrice(card: Card): number {
   const base: Record<string, number> = { attack: 8, defense: 7, heal: 9, utility: 6 };
   return (base[card.type] ?? 8) + Math.floor(Math.random() * 5);

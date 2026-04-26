@@ -1,3 +1,13 @@
+/**
+ * Eventos aleatorios que aparecen en el piso 2 (fase "event").
+ *
+ * EventPage selecciona uno al azar al montar el componente.
+ * Cada evento tiene dos opciones con efectos distintos:
+ *   - gold:   añade oro al jugador.
+ *   - damage: resta HP al jugador.
+ *   - heal:   restaura HP al jugador.
+ *   - cost + card: gasta oro y otorga una carta aleatoria del SHOP_POOL.
+ */
 import type { GameEvent } from "../types";
 
 export const EVENTS: GameEvent[] = [

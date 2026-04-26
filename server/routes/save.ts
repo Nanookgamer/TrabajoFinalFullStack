@@ -1,3 +1,15 @@
+/**
+ * Rutas de gestión de partidas guardadas.
+ *
+ * Todas las rutas requieren autenticación JWT (authMiddleware).
+ *
+ *   GET    /api/save         — devuelve los 3 slots del usuario (data: null si vacío).
+ *   POST   /api/save/:slot   — crea o sobreescribe un slot (upsert).
+ *   DELETE /api/save/:slot   — elimina un slot concreto.
+ *
+ * Cada usuario puede tener hasta 3 slots (1, 2, 3) gracias a la
+ * restricción UNIQUE(user_id, slot) en la tabla saved_games.
+ */
 import { Router } from "express";
 import type { Response } from "express";
 import pool from "../db.js";

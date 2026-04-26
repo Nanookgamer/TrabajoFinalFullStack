@@ -1,3 +1,17 @@
+/**
+ * Pantalla de selección de partidas guardadas.
+ *
+ * Muestra los 3 slots de guardado del usuario. Para cada slot:
+ *   - Si tiene datos: muestra progreso de pisos, vida, oro, cartas, dados y turnos.
+ *     Botones: CARGAR (carga la partida) y 🗑 (borrado en dos pasos).
+ *   - Si está vacío: muestra "+ NUEVA PARTIDA" con el GameState inicial.
+ *
+ * El borrado en dos pasos evita eliminar partidas accidentalmente:
+ * el primer click muestra "BORRAR / ✕" y el segundo confirma la acción.
+ *
+ * Los subcomponentes SlotSkeleton y SlotCard se definen dentro del componente
+ * para poder acceder al estilo `btn` sin prop-drilling.
+ */
 import { useRef, useState, useEffect } from "react";
 import { useMatrixRain } from "../background/useMatrixRain";
 import { apiGetSaves, apiDeleteSave } from "../services/api";

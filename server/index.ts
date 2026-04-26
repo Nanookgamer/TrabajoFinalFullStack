@@ -1,3 +1,12 @@
+/**
+ * Punto de entrada del servidor Express de Dice Tactics.
+ *
+ * Responsabilidades:
+ *   - Ejecuta las migraciones de base de datos al arrancar.
+ *   - Monta las rutas de la API (/api/auth y /api/save).
+ *   - En producción sirve el frontend compilado (dist/client/) como archivos estáticos.
+ *   - En desarrollo habilita CORS para que Vite (puerto 5173) pueda hacer peticiones al servidor (3001).
+ */
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";

@@ -1,3 +1,11 @@
+/**
+ * Panel derecho del combate que muestra la información del enemigo:
+ * imagen, nombre, barra de vida, ataque por turno y turnos de veneno restantes.
+ *
+ * Si el enemigo es un jefe (isBoss: true) se aplica un drop-shadow en color
+ * accent y el nombre se muestra en rojo/magenta en lugar de cian.
+ * La animación "enemyHit" se activa cuando el enemigo recibe daño.
+ */
 import HpBar from "./HpBar";
 import type { ThemeTokens, Enemy } from "../types";
 

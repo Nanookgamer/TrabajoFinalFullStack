@@ -1,3 +1,14 @@
+/**
+ * Migración automática de base de datos.
+ *
+ * Se ejecuta al arrancar el servidor y crea las tablas si no existen.
+ * Si la tabla saved_games existe pero sin la columna "slot" (versión antigua
+ * con un único guardado por usuario), la elimina y la recrea con el nuevo
+ * esquema de 3 slots por usuario.
+ *
+ * No usa una herramienta de migraciones dedicada por simplicidad; para un
+ * proyecto en producción se recomendaría node-pg-migrate o Flyway.
+ */
 import pool from "./db.js";
 
 export async function migrate(): Promise<void> {

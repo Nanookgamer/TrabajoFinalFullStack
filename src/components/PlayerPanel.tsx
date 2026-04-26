@@ -1,3 +1,11 @@
+/**
+ * Panel izquierdo del combate que muestra la información del jugador:
+ * imagen, nombre, barra de vida y efectos de estado activos
+ * (bloque, reflejo, regeneración).
+ *
+ * La animación "playerHit" se activa al recibir daño del enemigo.
+ * El bloque 9999 se muestra como "∞" (bloqueo infinito del Escudo Mágico).
+ */
 import HpBar from "./HpBar";
 import type { ThemeTokens } from "../types";
 

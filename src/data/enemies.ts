@@ -1,3 +1,11 @@
+/**
+ * Enemigos normales del juego, uno por piso (pisos 0, 1 y 2).
+ *
+ * ENEMIES[gameState.floor] selecciona el enemigo correspondiente al piso actual.
+ * El piso 3 usa FINAL_BOSS de bosses.ts en lugar de este array.
+ *
+ * Progresión de dificultad: el Slime es el más fácil, el Brujo el más duro.
+ */
 import type { Enemy } from "../types";
 
 export const ENEMIES: Enemy[] = [

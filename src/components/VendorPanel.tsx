@@ -1,3 +1,10 @@
+/**
+ * Panel izquierdo de la tienda que muestra al vendedor y el mazo actual.
+ *
+ * Muestra una frase aleatoria del vendedor (generada en ShopPage al montar)
+ * y la lista de cartas del mazo actualizada en tiempo real mientras el jugador
+ * compra en la tienda.
+ */
 import { CARDS } from "../data/cards";
 import type { ThemeTokens } from "../types";
 

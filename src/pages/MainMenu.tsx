@@ -1,3 +1,13 @@
+/**
+ * Menú principal de Dice Tactics.
+ *
+ * Muestra el nombre del usuario autenticado y dos botones:
+ *   - JUGAR    → navega a la pantalla de selección de partidas (LoadGame).
+ *   - CERRAR SESIÓN → llama a logout() del AuthContext, que limpia el token
+ *     de localStorage y devuelve el usuario a la pantalla de login.
+ *
+ * El fondo usa el efecto de lluvia de código Matrix (useMatrixRain).
+ */
 import { useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useMatrixRain } from "../background/useMatrixRain";
@@ -5,7 +15,7 @@ import type { ThemeTokens } from "../types";
 
 interface Props {
   theme: ThemeTokens;
-  onPlay: () => void;
+  onPlay: () => void; // Navega a la selección de partidas
 }
 
 export default function MainMenu({ theme: t, onPlay }: Props) {
@@ -13,6 +23,7 @@ export default function MainMenu({ theme: t, onPlay }: Props) {
   useMatrixRain(canvasRef);
   const { user, logout } = useAuth();
 
+  // ── Estilos de botón ──────────────────────────────────────────────────────────
   const btnPrimary: React.CSSProperties = {
     width: 260, padding: "13px 0",
     fontFamily: t.titleFont, fontSize: 15, letterSpacing: 3,
@@ -37,6 +48,7 @@ export default function MainMenu({ theme: t, onPlay }: Props) {
         height: "100%", gap: 16,
         animation: "fadeIn 0.35s ease-out",
       }}>
+        {/* Título del juego con efecto de brillo */}
         <div style={{
           fontFamily: t.titleFont, color: t.primary,
           fontSize: 42, letterSpacing: 8, marginBottom: 8,
@@ -45,6 +57,7 @@ export default function MainMenu({ theme: t, onPlay }: Props) {
           DICE TACTICS
         </div>
 
+        {/* Nombre del usuario autenticado */}
         <div style={{
           fontFamily: t.bodyFont, color: t.textDim,
           fontSize: 14, marginBottom: 24, letterSpacing: 2,

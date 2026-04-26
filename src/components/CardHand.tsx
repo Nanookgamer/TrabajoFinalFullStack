@@ -1,9 +1,22 @@
+/**
+ * Mano de cartas del jugador durante el combate.
+ *
+ * Muestra todas las cartas del mazo en una fila horizontal con scroll.
+ * El estado visual de cada carta depende de la fase del turno:
+ *   - "roll":      todas en reposo, no interactuables.
+ *   - "assign":    las cartas compatibles con el dado seleccionado se resaltan
+ *                  y se elevan ligeramente. Las incompatibles se atenúan.
+ *   - "resolving": no interactuables mientras se procesan los efectos.
+ *
+ * Al activar una carta, esta sube más y muestra el valor del dado asignado.
+ */
 import { checkRequirement } from "../data/cards";
 import type { ThemeTokens, Card, Phase } from "../types";
 
+// HandCard extiende Card con el estado de activación en la mano actual
 export interface HandCard extends Card {
   activated: boolean;
-  assignedDie: number | null;
+  assignedDie: number | null; // Valor del dado que la activó (null si no está activada)
 }
 
 interface Props {
@@ -14,6 +27,7 @@ interface Props {
   theme: ThemeTokens;
 }
 
+// Convierte el requisito de dado a texto legible para mostrar en la carta
 function reqLabel(req: Card["req"]): string {
   switch (req.type) {
     case "even":  return "PAR";

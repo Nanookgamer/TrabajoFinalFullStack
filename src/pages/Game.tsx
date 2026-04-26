@@ -1,20 +1,22 @@
 /**
- * Pantalla de juego, es la pantalla principal.
+ * Máquina de estados del juego activo.
  *
- * Aparece en los pisos pares (piso 2) al avanzar tras ganar un combate.
- * Se selecciona un evento al azar de los 4 disponibles en events.ts.
+ * Game.tsx no renderiza contenido propio: coordina qué pantalla
+ * se muestra en cada momento y gestiona las transiciones entre fases.
  *
- * Flujo:
- *   1. El jugador ve el icono, título y descripción del evento.
- *   2. Elige una de las dos opciones disponibles.
- *   3. Se aplica el efecto de la opción al GameState.
- *   4. Se muestra el resultado y el botón "AVANZAR".
+ * Progresión de pisos:
+ *   Piso 0 → Shop → Piso 1 → Event → Piso 2 → Shop → Piso 3 (Jefe) → Resultado
  *
- * Posibles efectos de las opciones:
- *   - gold:   añade oro al jugador.
- *   - damage: reduce HP del jugador.
- *   - heal:   restaura HP del jugador.
- *   - cost + card: gasta oro y otorga una carta aleatoria de la tienda.
+ * Lógica de transición (onCombatWin):
+ *   - nextFloor >= 4       → victoria, eliminar guardado
+ *   - nextFloor % 2 === 1  → tienda (pisos 1 y 3)
+ *   - nextFloor % 2 === 0  → evento (piso 2)
+ *
+ * El auto-guardado se realiza en cada transición de fase (apiSave).
+ * Al ganar o perder se elimina el guardado (apiDeleteSave) para liberar el slot.
+ *
+ * El botón de salida al menú se superpone como overlay fijo sobre todas las
+ * pantallas excepto transición y resultado, usando z-index 9999.
  */
 
 import { useState } from "react";

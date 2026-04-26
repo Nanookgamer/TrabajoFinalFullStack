@@ -1,5 +1,17 @@
+/**
+ * Sección de dados del combate.
+ *
+ * Muestra los dados lanzados del jugador y los controles del turno:
+ *   - Fase "roll":       botón LANZAR para generar los dados aleatoriamente.
+ *   - Fase "assign":     dados clicables; el seleccionado se resalta.
+ *                        Botón FIN TURNO con el conteo de cartas activadas.
+ *   - Fase "resolving":  indicador "PROCESANDO..." mientras se calculan efectos.
+ *
+ * Cada dado se dibuja con SVG mostrando los puntos en sus posiciones reales.
+ */
 import type { ThemeTokens, Phase } from "../types";
 
+// Posiciones (cx, cy) de los puntos para cada valor de dado (1–6)
 const DOT_POS: Record<number, [number, number][]> = {
   1: [[24, 24]],
   2: [[16, 16], [32, 32]],
