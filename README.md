@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
+# Dice Tactics
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Juego de combate por turnos con cartas y dados. El jugador avanza por 4 pisos derrotando enemigos, comprando cartas en la tienda y resolviendo eventos aleatorios hasta llegar al jefe final.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend**: React 19 + TypeScript (Vite)
+- **Backend**: Node.js + Express 5 + TypeScript
+- **Base de datos**: PostgreSQL
+- **Auth**: JWT + bcrypt
+- **Despliegue**: Render
 
-## React Compiler
+## Estructura
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/        → Frontend React (páginas, componentes, datos)
+server/     → Backend Express (rutas, middleware, BD)
+public/img/ → Imágenes del juego (jugador, enemigos, jefes, tienda)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Desarrollo local
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Requisitos
+- Node.js 18+
+- PostgreSQL en local
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Configuración
+
+Copia `.env.example` a `.env` y rellena los valores:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=nombre_de_tu_bd
+DB_USER=postgres
+DB_PASSWORD=tu_password
+JWT_SECRET=una_cadena_secreta_larga
 ```
+
+### Arrancar
+
+```bash
+npm install
+
+# Terminal 1 — servidor Express (puerto 3001)
+npm run dev:server
+
+# Terminal 2 — frontend Vite (puerto 5173)
+npm run dev
+```
+
+Abre **http://localhost:5173**
+
+Las tablas de la base de datos se crean automáticamente al arrancar el servidor.
+
+## Producción
+
+```bash
+npm run build   # compila frontend (dist/client/) y servidor (dist/server/)
+npm start       # arranca el servidor, que también sirve el frontend
+```
+
+## Despliegue en Render
+
+1. Sube el repositorio a GitHub
+2. En Render → **New Web Service** → conecta el repo
+3. Crea una base de datos PostgreSQL en Render y copia la **External Database URL**
+4. En el web service añade las variables de entorno:
+   - `DATABASE_URL` → URL copiada del paso anterior
+   - `JWT_SECRET` → cadena secreta larga
+   - `NODE_ENV` → `production`
+5. Render ejecuta `npm install && npm run build` y luego `npm start`
+
+## Comandos disponibles
+
+| Comando | Descripción |
+|---|---|
+| `npm run dev` | Frontend Vite en localhost:5173 |
+| `npm run dev:server` | Servidor Express con hot-reload |
+| `npm run build` | Build completo (cliente + servidor) |
+| `npm start` | Arrancar servidor en producción |
+| `npm run lint` | ESLint |
