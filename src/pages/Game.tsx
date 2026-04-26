@@ -1,3 +1,22 @@
+/**
+ * Pantalla de juego, es la pantalla principal.
+ *
+ * Aparece en los pisos pares (piso 2) al avanzar tras ganar un combate.
+ * Se selecciona un evento al azar de los 4 disponibles en events.ts.
+ *
+ * Flujo:
+ *   1. El jugador ve el icono, título y descripción del evento.
+ *   2. Elige una de las dos opciones disponibles.
+ *   3. Se aplica el efecto de la opción al GameState.
+ *   4. Se muestra el resultado y el botón "AVANZAR".
+ *
+ * Posibles efectos de las opciones:
+ *   - gold:   añade oro al jugador.
+ *   - damage: reduce HP del jugador.
+ *   - heal:   restaura HP del jugador.
+ *   - cost + card: gasta oro y otorga una carta aleatoria de la tienda.
+ */
+
 import { useState } from "react";
 import { apiSave, apiDeleteSave } from "../services/api";
 import type { ThemeTokens, GameState, GameScreen } from "../types";
@@ -7,6 +26,7 @@ import ShopPage from "./ShopPage";
 import EventPage from "./EventPage";
 import ResultPage from "./ResultPage";
 
+// Cargamos los Props
 interface Props {
   theme: ThemeTokens;
   gameState: GameState;
@@ -138,8 +158,8 @@ export default function Game({ theme: t, gameState, slot, onGameStateChange, onR
               title="Salir al menú principal"
               style={{
                 padding: "8px 14px",
-                background: t.surface1, border: `1px solid ${t.border}`,
-                color: t.textDim, fontFamily: t.titleFont,
+                background: t.accent2, border: `1px solid ${t.border}`,
+                color: t.bg, fontFamily: t.titleFont,
                 fontSize: 11, letterSpacing: 2, cursor: "pointer", borderRadius: 2,
                 opacity: 0.7,
               }}

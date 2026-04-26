@@ -1,0 +1,238 @@
+════════════════════════════════════════════════════════════════════
+  DICE TACTICS — Documentación del Proyecto
+════════════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. INTRODUCCIÓN Y DESCRIPCIÓN DEL PROYECTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUÉ HACE LA APLICACIÓN
+  Dice Tactics es un juego de combate por turnos con cartas y dados.
+  El jugador avanza por 4 pisos derrotando enemigos, comprando cartas
+  en la tienda y resolviendo eventos aleatorios, hasta enfrentarse al
+  jefe final. Cada turno, lanza sus dados y los asigna a cartas de su
+  mazo para activar ataques, defensas, curaciones y efectos especiales.
+
+  La aplicación permite registrar usuarios, guardar hasta 3 partidas
+  por cuenta y retomarlas en cualquier momento.
+
+STACK TECNOLÓGICO
+  Frontend  : React 19 + TypeScript (Vite como bundler)
+  Backend   : Node.js + Express 5 + TypeScript
+  Base de datos : PostgreSQL (pg)
+  Auth      : JWT (jsonwebtoken) + bcrypt
+  Despliegue: Render (web service + PostgreSQL)
+
+OBJETIVO PRINCIPAL
+  Aplicación fullstack con CRUD completo, autenticación con JWT,
+  persistencia en base de datos relacional y despliegue en la nube,
+  demostrando la integración entre un frontend React y un backend
+  Express con PostgreSQL.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. ARQUITECTURA Y ESTRUCTURA DEL PROYECTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SEPARACIÓN FRONTEND / BACKEND
+  El proyecto está dividido en dos capas completamente independientes:
+
+  · Frontend (src/)  — React SPA compilada con Vite.
+    No tiene lógica de servidor ni acceso directo a la BD.
+    Toda comunicación con el servidor se hace mediante fetch() a la API REST.
+
+  · Backend (server/) — Express compilado con tsc.
+    Expone una API REST en JSON.
+    Accede a PostgreSQL con el driver "pg" (sin ORM).
+    Sirve el build del frontend en producción como archivos estáticos.
+
+COMUNICACIÓN (API REST)
+  En desarrollo:
+    Vite corre en localhost:5173 y redirige /api/* → localhost:3001
+    mediante un proxy configurado en vite.config.ts.
+
+  En producción (Render):
+    Express sirve el frontend compilado (dist/client/) y responde
+    las peticiones /api/* en el mismo proceso y puerto.
+    No hay CORS en producción porque todo es mismo origen.
+
+  Flujo de una petición típica:
+    React (fetch /api/save/1)
+      → Vite proxy (dev) / Express estático (prod)
+        → Express Router /api/save/:slot
+          → Middleware JWT (verifica token)
+            → Pool pg (consulta SQL)
+              → Respuesta JSON
+
+ESTRUCTURA DE CARPETAS
+  /
+  ├── src/                    ← React (solo frontend)
+  │   ├── pages/              ← Pantallas: Login, Register, MainMenu,
+  │   │                          LoadGame, Game, CombatPage, ShopPage,
+  │   │                          EventPage, ResultPage
+  │   ├── components/         ← Componentes reutilizables: PlayerPanel,
+  │   │                          EnemyPanel, CardHand, DicePool, HpBar...
+  │   ├── context/            ← AuthContext (JWT en localStorage)
+  │   ├── data/               ← Datos estáticos: cartas, enemigos, jefes,
+  │   │                          eventos, temas visuales
+  │   ├── services/api.ts     ← Todas las llamadas fetch a la API
+  │   ├── types.ts            ← Interfaces TypeScript compartidas
+  │   └── Juego.tsx           ← Raíz de la app + enrutado por estado
+  │
+  ├── server/                 ← Express (solo backend)
+  │   ├── index.ts            ← Arranque del servidor + archivos estáticos
+  │   ├── db.ts               ← Pool de conexión PostgreSQL
+  │   ├── migrate.ts          ← Creación automática de tablas al arrancar
+  │   ├── middleware/auth.ts  ← Verificación JWT en rutas protegidas
+  │   └── routes/
+  │       ├── auth.ts         ← POST /api/auth/login y /register
+  │       └── save.ts         ← GET/POST/DELETE /api/save/:slot
+  │
+  ├── public/img/             ← Imágenes: jugador, enemigos, jefes, tienda
+  ├── dist/client/            ← Build del frontend (generado por Vite)
+  ├── dist/server/            ← Build del backend (generado por tsc)
+  ├── render.yaml             ← Configuración de despliegue en Render
+  └── .env                    ← Variables de entorno (no subir a git)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. BASE DE DATOS Y MODELO DE DATOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ESQUEMA DE LA BASE DE DATOS (PostgreSQL)
+
+  TABLE users
+  ┌─────────────────┬──────────────┬────────────────────────────┐
+  │ Campo           │ Tipo         │ Descripción                │
+  ├─────────────────┼──────────────┼────────────────────────────┤
+  │ id              │ SERIAL PK    │ Identificador único        │
+  │ username        │ VARCHAR(50)  │ Nombre de usuario (único)  │
+  │ password_hash   │ VARCHAR(255) │ Hash bcrypt de la contraseña│
+  │ created_at      │ TIMESTAMPTZ  │ Fecha de registro          │
+  └─────────────────┴──────────────┴────────────────────────────┘
+
+  TABLE saved_games
+  ┌─────────────────┬─────────────┬────────────────────────────────┐
+  │ Campo           │ Tipo        │ Descripción                    │
+  ├─────────────────┼─────────────┼────────────────────────────────┤
+  │ id              │ SERIAL PK   │ Identificador único            │
+  │ user_id         │ INTEGER FK  │ Referencia a users(id)         │
+  │ slot            │ SMALLINT    │ Slot de guardado (1, 2 o 3)    │
+  │ floor           │ SMALLINT    │ Piso actual del juego (0–3)    │
+  │ hp              │ SMALLINT    │ Vida actual del jugador        │
+  │ max_hp          │ SMALLINT    │ Vida máxima del jugador        │
+  │ gold            │ INTEGER     │ Oro acumulado                  │
+  │ dice_count      │ SMALLINT    │ Número de dados por turno      │
+  │ deck            │ TEXT[]      │ Array de IDs de cartas del mazo│
+  │ total_turns     │ INTEGER     │ Turnos jugados en total        │
+  │ saved_at        │ TIMESTAMPTZ │ Fecha del último guardado      │
+  └─────────────────┴─────────────┴────────────────────────────────┘
+  UNIQUE (user_id, slot) — máximo 3 partidas por usuario.
+  ON DELETE CASCADE — si se borra un usuario, se borran sus partidas.
+
+OPERACIONES CRUD IMPLEMENTADAS
+
+  CREATE
+    · Registro de usuario → INSERT INTO users (POST /api/auth/register)
+    · Nueva partida en slot vacío → INSERT INTO saved_games (POST /api/save/:slot)
+
+  READ
+    · Login → SELECT FROM users WHERE username (POST /api/auth/login)
+    · Cargar partidas → SELECT FROM saved_games WHERE user_id (GET /api/save)
+
+  UPDATE
+    · Auto-guardado durante el juego → INSERT ... ON CONFLICT DO UPDATE
+      Se ejecuta al ganar un combate, salir de la tienda o resolver un evento.
+      Usa un upsert para crear o sobreescribir el slot sin lógica condicional.
+
+  DELETE
+    · Borrar partida manualmente → DELETE FROM saved_games WHERE user_id AND slot
+      (DELETE /api/save/:slot) — desde la pantalla de selección de partidas.
+    · Borrar partida al terminar → DELETE al ganar o perder la partida completa,
+      para que el slot quede libre y se pueda usar en una nueva partida.
+
+POR QUÉ ESTE DISEÑO Y NO OTRO
+
+  Se descartó tener múltiples registros por usuario sin distinción de slot,
+  porque no había forma sencilla de identificar "cuál partida cargar" sin
+  mostrar fechas o IDs internos al usuario.
+
+  También se descartó una única partida por usuario (diseño inicial), porque
+  limitaba la experiencia: el jugador no podía experimentar estrategias distintas
+  simultáneamente ni tener una partida de "prueba" y otra "seria".
+
+  El diseño final con UNIQUE(user_id, slot) y 3 slots es el equilibrio entre
+  sencillez (no hay paginación, no hay nombres de partida) y funcionalidad
+  (el jugador gestiona sus partidas de forma visual e intuitiva).
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. FUNCIONALIDADES PRINCIPALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AUTENTICACIÓN
+  · Registro con validación (username único, contraseña mín. 3 caracteres)
+  · Login con bcrypt + JWT de 24h
+  · Sesión persistente en localStorage (sobrevive recargas de página)
+  · Logout limpia token y datos del usuario
+
+GESTIÓN DE PARTIDAS (CRUD completo)
+  · Hasta 3 slots de guardado por usuario
+  · Visualización del estado de cada slot: piso, vida, oro, cartas, dados, turnos
+  · Cargar partida guardada o iniciar nueva en slot vacío
+  · Borrar partida con confirmación en dos pasos (evita borrados accidentales)
+  · Auto-guardado automático al avanzar de fase durante el juego
+
+FLUJO DE JUEGO
+  · 4 pisos con progresión: Combate → Tienda → Combate → Evento → Combate → Tienda → Jefe
+  · Combate por turnos: lanzar dados → asignar a cartas → resolver efectos
+  · 15 cartas distintas con requisitos de dado variados (par, impar, exacto, rango)
+  · Efectos de carta: daño, bloque, curación, oro, reflejo, veneno, regeneración
+  · 3 enemigos normales + 3 jefes finales con stats distintos
+  · Tienda: compra de cartas y dado extra con oro acumulado
+  · Eventos aleatorios: decisiones con consecuencias (oro, daño, curación, cartas)
+  · Pantalla de resultado: victoria o derrota con resumen
+
+INTERFAZ
+  · Tema visual sci-fi con lluvia de código (efecto Matrix) en los menús
+  · Imágenes propias para jugador, enemigos, jefes y vendedor
+  · Animaciones de combate (golpe, curación, textos flotantes)
+  · Botón de salida al menú desde cualquier pantalla de juego con confirmación
+  · Responsive dentro de pantallas 16:9 (escalado mejorado para pantallas grandes)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. MEJORAS FUTURAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SEGURIDAD Y AUTENTICACIÓN
+  · Refresh tokens para sesiones de larga duración sin re-login
+  · Rate limiting en los endpoints de autenticación (evitar fuerza bruta)
+  · Validación de esquema en el servidor con Zod o similar
+
+BASE DE DATOS Y RENDIMIENTO
+  · Tabla de historial de partidas (partidas completadas, fecha, resultado)
+  · Tabla de rankings globales (mejor tiempo, menos turnos, más victorias)
+  · Índices adicionales si escala el número de usuarios
+
+JUEGO
+  · Más cartas, enemigos y pisos
+  · Sistema de dificultad (fácil / normal / difícil)
+  · Segundo tema visual (fantasy) ya preparado en el código pero no activado
+  · Efectos de sonido y música de fondo
+  · Animaciones de entrada/salida de pantalla más elaboradas
+  · Modo "NG+" o semilla aleatoria para rejugabilidad
+
+CALIDAD DE CÓDIGO
+  · Tests automatizados: Vitest para el frontend, Jest para el backend
+  · Tests de integración para los endpoints con Supertest
+  · Documentación de la API con Swagger/OpenAPI
+  · Pipeline de CI/CD en GitHub Actions (lint + build + test en cada PR)
+
+DESPLIEGUE
+  · Variables de entorno gestionadas con un servicio de secretos
+  · Migraciones de BD con una herramienta dedicada (Flyway, node-pg-migrate)
+    en lugar del script de migración manual actual
+  · Logs centralizados y monitorización de errores (Sentry o similar)
+
+════════════════════════════════════════════════════════════════════
