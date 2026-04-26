@@ -10,10 +10,28 @@ export async function migrate(): Promise<void> {
     );
 
     CREATE INDEX IF NOT EXISTS idx_users_username ON users (username);
+  `);
+
+  // Crea la tabla de partidas con soporte de 3 slots por usuario.
+  // Si ya existía con la restricción antigua (UNIQUE user_id) hay que
+  // borrarla y recrearla; en instalaciones nuevas se crea directamente.
+  await pool.query(`
+    DO $$
+    BEGIN
+      -- Detecta si la columna slot ya existe
+      IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name = 'saved_games' AND column_name = 'slot'
+      ) THEN
+        -- Tabla antigua sin slot: la eliminamos y recreamos
+        DROP TABLE IF EXISTS saved_games;
+      END IF;
+    END$$;
 
     CREATE TABLE IF NOT EXISTS saved_games (
       id          SERIAL      PRIMARY KEY,
       user_id     INTEGER     NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      slot        SMALLINT    NOT NULL CHECK (slot BETWEEN 1 AND 3),
       floor       SMALLINT    NOT NULL CHECK (floor BETWEEN 0 AND 3),
       total_turns INTEGER     NOT NULL DEFAULT 0 CHECK (total_turns >= 0),
       hp          SMALLINT    NOT NULL CHECK (hp >= 0),
@@ -22,7 +40,7 @@ export async function migrate(): Promise<void> {
       dice_count  SMALLINT    NOT NULL DEFAULT 3 CHECK (dice_count BETWEEN 1 AND 10),
       deck        TEXT[]      NOT NULL,
       saved_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      UNIQUE (user_id)
+      UNIQUE (user_id, slot)
     );
 
     CREATE INDEX IF NOT EXISTS idx_saved_games_user ON saved_games (user_id);

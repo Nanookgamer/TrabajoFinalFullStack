@@ -257,7 +257,7 @@ export default function CombatPage({ theme: t, gameState, onWin, onLose }: Props
   // Cuadrados de progreso de piso en el header (rellenos hasta el piso actual)
   const floorBoxes = Array.from({ length: 4 }, (_, i) => (
     <div key={i} style={{
-      width: 14, height: 14,
+      width: 18, height: 18,
       background: i <= gameState.floor ? t.primary : t.surface2,
       border: `1px solid ${t.border}`,
       borderRadius: 3,
@@ -292,26 +292,26 @@ export default function CombatPage({ theme: t, gameState, onWin, onLose }: Props
       {/* ── Header: nivel, nombre del enemigo e indicadores de piso ── */}
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "10px 20px",
+        padding: "12px 24px",
         background: t.surface1, borderBottom: `1px solid ${t.border}`,
         flexShrink: 0,
       }}>
-        <div style={{ fontFamily: t.titleFont, color: t.primary, fontSize: 13 }}>
+        <div style={{ fontFamily: t.titleFont, color: t.primary, fontSize: 15 }}>
           {`NIVEL ${gameState.floor + 1}/4`}
           {" — "}
           <span style={{ color: t.text }}>{enemy.name}</span>
           {enemy.isBoss && (
-            <span style={{ color: t.accent, marginLeft: 8, fontSize: 11 }}>⚠ JEFE</span>
+            <span style={{ color: t.accent, marginLeft: 8, fontSize: 13 }}>⚠ JEFE</span>
           )}
         </div>
-        <div style={{ display: "flex", gap: 4 }}>{floorBoxes}</div>
-        <div style={{ fontFamily: t.titleFont, color: t.primary, fontSize: 13 }}>
+        <div style={{ display: "flex", gap: 5 }}>{floorBoxes}</div>
+        <div style={{ fontFamily: t.titleFont, color: t.primary, fontSize: 15 }}>
           🪙 {gameState.gold}
         </div>
       </div>
 
       {/* ── Área de batalla: jugador | log de eventos | enemigo ── */}
-      <div style={{ display: "flex", flex: 1, gap: 8, padding: "12px 16px", minHeight: 0, overflow: "hidden" }}>
+      <div style={{ display: "flex", flex: 1, gap: 12, padding: "16px 24px", minHeight: 0, overflow: "hidden" }}>
         {/* Panel izquierdo del jugador */}
         <PlayerPanel
           playerHp={playerHp}
@@ -327,15 +327,15 @@ export default function CombatPage({ theme: t, gameState, onWin, onLose }: Props
         <div style={{
           flex: 1,
           background: t.surface1, border: `1px solid ${t.border}`, borderRadius: 2,
-          padding: "10px 12px",
+          padding: "12px 16px",
           overflowY: "auto",
-          display: "flex", flexDirection: "column", gap: 4,
+          display: "flex", flexDirection: "column", gap: 5,
         }}>
           {log.map((msg, i) => (
             <div key={i} style={{
-              fontSize: 12,
+              fontSize: 14,
               color: i === log.length - 1 ? t.text : t.textDim,
-              fontFamily: t.bodyFont, lineHeight: 1.4,
+              fontFamily: t.bodyFont, lineHeight: 1.5,
             }}>
               {msg}
             </div>
@@ -346,7 +346,6 @@ export default function CombatPage({ theme: t, gameState, onWin, onLose }: Props
         <EnemyPanel
           enemyHp={enemyHp}
           enemy={enemy}
-          floor={gameState.floor}
           poisonTurns={poisonTurns}
           isHit={enemyHit}
           theme={t}

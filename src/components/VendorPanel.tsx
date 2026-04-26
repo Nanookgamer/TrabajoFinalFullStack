@@ -1,15 +1,10 @@
-/**
- * Panel lateral izquierdo de la tienda.
- * Muestra el avatar del vendedor robótico, una frase aleatoria
- * y la lista completa del mazo actual del jugador con sus iconos.
- */
 import { CARDS } from "../data/cards";
 import type { ThemeTokens } from "../types";
 
 interface Props {
-  vendorLine: string;  // Frase aleatoria seleccionada en ShopPage
-  deck: string[];      // IDs de cartas del mazo actual
-  diceCount: number;   // Número de dados que el jugador lanza por turno
+  vendorLine: string;
+  deck: string[];
+  diceCount: number;
   theme: ThemeTokens;
 }
 
@@ -21,10 +16,17 @@ export default function VendorPanel({ vendorLine, deck, diceCount, theme: t }: P
       display: "flex", flexDirection: "column", alignItems: "center",
       padding: "20px 12px", gap: 12, overflowY: "auto",
     }}>
-      {/* Avatar del vendedor */}
-      <div style={{ fontSize: 64 }}>🤖</div>
+      <img
+        src="/img/shopkeeper/shopkeeper.png"
+        alt="Vendedor"
+        style={{
+          width: 80, height: 80,
+          objectFit: "contain",
+          imageRendering: "pixelated",
+          filter: `drop-shadow(0 0 8px ${t.primary}55)`,
+        }}
+      />
 
-      {/* Frase del vendedor en un cuadro de texto */}
       <div style={{
         background: t.surface2, border: `1px solid ${t.border}`,
         borderRadius: 2, padding: "8px 10px",
@@ -33,7 +35,6 @@ export default function VendorPanel({ vendorLine, deck, diceCount, theme: t }: P
         {vendorLine}
       </div>
 
-      {/* Lista de cartas del mazo con su icono coloreado por tipo */}
       <div style={{ width: "100%", marginTop: 8 }}>
         <div style={{
           fontFamily: t.titleFont, fontSize: 11,
@@ -41,21 +42,20 @@ export default function VendorPanel({ vendorLine, deck, diceCount, theme: t }: P
         }}>
           MAZO
         </div>
-
         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {deck.map((id, i) => {
             const card = CARDS[id];
             return (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: t.text }}>
-                {/* Icono coloreado según el tipo de la carta */}
+              <div key={i} style={{
+                display: "flex", alignItems: "center", gap: 6,
+                fontSize: 11, color: t.text,
+              }}>
                 <span style={{ color: t.cardTypeColors[card.type] }}>{card.icon}</span>
                 <span>{card.name}</span>
               </div>
             );
           })}
         </div>
-
-        {/* Resumen: total de cartas y dados por turno */}
         <div style={{ marginTop: 8, fontSize: 11, color: t.textDim }}>
           {deck.length} cartas · {diceCount} dados/turno
         </div>

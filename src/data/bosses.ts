@@ -4,6 +4,7 @@ export const BOSSES: Enemy[] = [
   {
     id: "dragon",
     name: "Dragón de Circuitos",
+    image: "enemy/dragon.png",
     maxHp: 92,
     attack: 14,
     gold: 30,
@@ -14,6 +15,7 @@ export const BOSSES: Enemy[] = [
   {
     id: "lich",
     name: "Lich Digital",
+    image: "enemy/lich.png",
     maxHp: 80,
     attack: 18,
     gold: 35,
@@ -24,6 +26,7 @@ export const BOSSES: Enemy[] = [
   {
     id: "cyber_queen",
     name: "Reina Cyber",
+    image: "enemy/cyber_queen.png",
     maxHp: 110,
     attack: 11,
     gold: 40,

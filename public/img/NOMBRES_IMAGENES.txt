@@ -1,0 +1,44 @@
+DICE TACTICS — Guía de imágenes
+================================
+
+Sustituye cada archivo por tu imagen correspondiente.
+Formatos admitidos: PNG (recomendado), JPG, WebP.
+Tamaño recomendado: 128×128 px o 256×256 px (cuadradas).
+
+
+── JUGADOR ─────────────────────────────────────────────
+  public/img/player/player.png
+    → El personaje que controla el jugador (mago, hacker, etc.)
+
+
+── ENEMIGOS (pisos 1-3) ────────────────────────────────
+  public/img/enemy/slime.png
+    → Slime Mecánico  |  Piso 1  |  HP: 24  |  ATK: 4
+
+  public/img/enemy/golem.png
+    → Golem de Datos  |  Piso 2  |  HP: 42  |  ATK: 7
+
+  public/img/enemy/brujo.png
+    → Brujo Cibernético  |  Piso 3  |  HP: 58  |  ATK: 10
+
+
+── JEFES FINALES (boss) ────────────────────────────────
+  public/img/enemy/dragon.png
+    → Dragón de Circuitos  |  Boss  |  HP: 92  |  ATK: 14
+    (Es el boss por defecto — FINAL_BOSS)
+
+  public/img/enemy/lich.png
+    → Lich Digital  |  Boss  |  HP: 80  |  ATK: 18
+
+  public/img/enemy/cyber_queen.png
+    → Reina Cyber  |  Boss  |  HP: 110  |  ATK: 11
+
+
+── TIENDA ──────────────────────────────────────────────
+  public/img/shopkeeper/shopkeeper.png
+    → El vendedor del mercado digital (robot, comerciante, etc.)
+
+
+── LOGO ────────────────────────────────────────────────
+  public/img/logo_DiceTactics.png
+    → Ya existe. Sustituye si quieres cambiarlo.

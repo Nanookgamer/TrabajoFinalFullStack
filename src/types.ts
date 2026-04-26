@@ -43,6 +43,7 @@ export interface Card {
 export interface Enemy {
   id: string;
   name: string;
+  image: string;  // Ruta relativa a /img/ (ej. "enemy/slime.png")
   maxHp: number;
   attack: number;
   gold: number;   // Oro que otorga al ser derrotado

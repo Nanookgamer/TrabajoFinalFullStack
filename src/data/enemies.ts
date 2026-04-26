@@ -4,6 +4,7 @@ export const ENEMIES: Enemy[] = [
   {
     id: "slime",
     name: "Slime Mecánico",
+    image: "enemy/slime.png",
     maxHp: 24,
     attack: 4,
     gold: 7,
@@ -13,6 +14,7 @@ export const ENEMIES: Enemy[] = [
   {
     id: "golem",
     name: "Golem de Datos",
+    image: "enemy/golem.png",
     maxHp: 42,
     attack: 7,
     gold: 12,
@@ -22,6 +24,7 @@ export const ENEMIES: Enemy[] = [
   {
     id: "brujo",
     name: "Brujo Cibernético",
+    image: "enemy/brujo.png",
     maxHp: 58,
     attack: 10,
     gold: 18,

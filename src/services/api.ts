@@ -1,33 +1,13 @@
-/**
- * Cliente HTTP para la API del servidor de Dice Tactics.
- *
- * La URL base se configura con la variable de entorno VITE_API_URL.
- * Si no está definida, apunta a http://localhost:3000 (desarrollo local).
- *
- * Todos los endpoints de partida guardada tienen un fallback a localStorage
- * ("dt_save") para que el juego funcione sin servidor backend.
- *
- * Endpoints disponibles:
- *   POST   /api/auth/login    → { token, user }
- *   POST   /api/auth/register → { token, user }
- *   GET    /api/save          → GameState | null
- *   POST   /api/save          → guarda el estado actual
- *   DELETE /api/save          → elimina la partida guardada
- */
 import type { GameState, User } from "../types";
 
-// En dev, Vite hace proxy de /api → localhost:3001 (ver vite.config.ts).
-// En producción, el servidor Express sirve el frontend → mismo origen.
-// Por eso BASE es siempre vacío: las rutas son relativas (/api/...).
+// En dev Vite hace proxy /api → :3001. En producción es mismo origen.
 const BASE = import.meta.env.VITE_API_URL ?? "";
 
-// Construye el header de autorización a partir del token almacenado en localStorage
 function authHeader(): Record<string, string> {
   const token = localStorage.getItem("dt_token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// Función genérica de petición HTTP con manejo de errores y cabeceras comunes
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...options,
@@ -58,33 +38,38 @@ export const apiRegister = (username: string, password: string) =>
     body: JSON.stringify({ username, password }),
   });
 
-// ── Partida guardada ──────────────────────────────────────────────────────────
+// ── Partidas guardadas (3 slots por usuario) ──────────────────────────────────
 
-// Obtiene la partida del servidor; si falla, intenta con el localStorage
-export const apiGetSave = async (): Promise<GameState | null> => {
+export type SavedSlot = { slot: number; data: GameState | null };
+
+// Devuelve los 3 slots del usuario. Si el servidor no está disponible,
+// cae en localStorage con la clave dt_save_<slot>.
+export const apiGetSaves = async (): Promise<SavedSlot[]> => {
   try {
-    return await request<GameState | null>("/api/save");
+    return await request<SavedSlot[]>("/api/save");
   } catch {
-    const local = localStorage.getItem("dt_save");
-    return local ? (JSON.parse(local) as GameState) : null;
+    return [1, 2, 3].map(slot => {
+      const raw = localStorage.getItem(`dt_save_${slot}`);
+      return { slot, data: raw ? (JSON.parse(raw) as GameState) : null };
+    });
   }
 };
 
-// Guarda el estado en localStorage primero (rápido) y luego en el servidor
-export const apiSave = async (state: GameState): Promise<void> => {
-  localStorage.setItem("dt_save", JSON.stringify(state));
+// Guarda la partida en el slot indicado (localStorage + servidor).
+export const apiSave = async (state: GameState, slot: number): Promise<void> => {
+  localStorage.setItem(`dt_save_${slot}`, JSON.stringify(state));
   try {
-    await request<void>("/api/save", {
+    await request<void>(`/api/save/${slot}`, {
       method: "POST",
       body: JSON.stringify(state),
     });
-  } catch { /* sin backend: el guardado en localStorage es suficiente */ }
+  } catch { /* sin backend: localStorage es suficiente */ }
 };
 
-// Elimina la partida de localStorage y del servidor (al ganar o perder)
-export const apiDeleteSave = async (): Promise<void> => {
-  localStorage.removeItem("dt_save");
+// Elimina el slot indicado de localStorage y del servidor.
+export const apiDeleteSave = async (slot: number): Promise<void> => {
+  localStorage.removeItem(`dt_save_${slot}`);
   try {
-    await request<void>("/api/save", { method: "DELETE" });
+    await request<void>(`/api/save/${slot}`, { method: "DELETE" });
   } catch { /* sin backend */ }
 };
