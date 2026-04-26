@@ -16,6 +16,7 @@ import type { AppScreen, GameState } from "./types";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MainMenu from "./pages/MainMenu";
+import LoadGame from "./pages/LoadGame";
 import Game from "./pages/Game";
 import "./styles.css";
 
@@ -74,7 +75,25 @@ function AppRouter() {
         }}
         onContinue={(saved) => {
           setGameState(saved);
+          setScreen("loadgame");
+        }}
+      />
+    );
+  }
+
+  // Pantalla de carga de partida guardada
+  if (screen === "loadgame" && gameState) {
+    return (
+      <LoadGame
+        theme={t}
+        savedGame={gameState}
+        onContinue={(saved) => {
+          setGameState(saved);
           setScreen("game");
+        }}
+        onBack={() => {
+          setGameState(null);
+          setScreen("menu");
         }}
       />
     );

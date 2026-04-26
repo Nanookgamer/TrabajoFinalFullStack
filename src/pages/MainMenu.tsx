@@ -11,7 +11,7 @@
  */
 import { useRef, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useMatrixRain } from "../hooks/useMatrixRain";
+import { useMatrixRain } from "../background/useMatrixRain";
 import { apiGetSave } from "../services/api";
 import type { ThemeTokens, GameState } from "../types";
 

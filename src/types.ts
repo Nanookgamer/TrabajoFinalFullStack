@@ -123,7 +123,7 @@ export interface User {
 // ── Tipos de navegación ───────────────────────────────────────────────────────
 
 // Pantallas del flujo de la aplicación principal (fuera del juego)
-export type AppScreen = 'login' | 'register' | 'menu' | 'game';
+export type AppScreen = 'login' | 'register' | 'menu' | 'loadgame' | 'game';
 
 // Pantallas dentro de una partida activa
 export type GameScreen = 'transition' | 'combat' | 'shop' | 'event' | 'result';

@@ -7,7 +7,7 @@
  */
 import { useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useMatrixRain } from "../hooks/useMatrixRain";
+import { useMatrixRain } from "../background/useMatrixRain";
 import type { ThemeTokens } from "../types";
 
 interface Props {
@@ -95,18 +95,11 @@ export default function Login({ theme: t, onSuccess, onRegister }: Props) {
           width: 340,
           animation: "fadeIn 0.35s ease-out",
         }}>
-          {/* Logo SVG y título del juego */}
+          {/* Logo y título del juego */}
           <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <svg width="48" height="48" viewBox="0 0 48 48">
-              <rect x="2"  y="2"  width="20" height="20" rx="2" fill={t.primary} opacity="0.9" />
-              <rect x="26" y="2"  width="20" height="20" rx="2" fill={t.accent}  opacity="0.9" />
-              <rect x="2"  y="26" width="20" height="20" rx="2" fill={t.accent}  opacity="0.9" />
-              <rect x="26" y="26" width="20" height="20" rx="2" fill={t.primary} opacity="0.9" />
-              <circle cx="12" cy="12" r="3" fill={t.bg} />
-              <circle cx="36" cy="12" r="3" fill={t.bg} />
-              <circle cx="12" cy="36" r="3" fill={t.bg} />
-              <circle cx="36" cy="36" r="3" fill={t.bg} />
-            </svg>
+            <img width="80" height="80" src="/img/logo_DiceTactics.png"style={{
+              marginBottom: 28,
+            }}></img>
             <div style={{
               fontFamily: t.titleFont, color: t.primary,
               fontSize: 22, marginTop: 8, letterSpacing: 4,

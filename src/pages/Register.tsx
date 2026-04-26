@@ -7,7 +7,7 @@
  */
 import { useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useMatrixRain } from "../hooks/useMatrixRain";
+import { useMatrixRain } from "../background/useMatrixRain";
 import type { ThemeTokens } from "../types";
 
 interface Props {
