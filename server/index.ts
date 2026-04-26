@@ -34,7 +34,7 @@ app.get("/api/health", (_req, res) => {
 // Vite construye en dist/client/; el servidor compilado queda en dist/server/
 const clientDist = path.join(__dirname, "..", "client");
 app.use(express.static(clientDist));
-app.get("*", (_req, res) => {
+app.get("/{*splat}", (_req, res) => {
   res.sendFile(path.join(clientDist, "index.html"));
 });
 

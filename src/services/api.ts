@@ -16,7 +16,10 @@
  */
 import type { GameState, User } from "../types";
 
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+// En dev, Vite hace proxy de /api → localhost:3001 (ver vite.config.ts).
+// En producción, el servidor Express sirve el frontend → mismo origen.
+// Por eso BASE es siempre vacío: las rutas son relativas (/api/...).
+const BASE = import.meta.env.VITE_API_URL ?? "";
 
 // Construye el header de autorización a partir del token almacenado en localStorage
 function authHeader(): Record<string, string> {

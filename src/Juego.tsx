@@ -32,7 +32,10 @@ const STARTING_DICE = 3;
 
 function AppRouter() {
   const { user } = useAuth();
-  const [screen, setScreen]       = useState<AppScreen>("login");
+  // Si ya hay token guardado (recarga de página), arrancamos en el menú
+  const [screen, setScreen]       = useState<AppScreen>(() =>
+    localStorage.getItem("dt_token") ? "menu" : "login"
+  );
   const [gameState, setGameState] = useState<GameState | null>(null);
 
   // Si no hay sesión iniciada, mostrar login o registro
